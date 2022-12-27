@@ -1,3 +1,4 @@
+
 public class Polynomial {
 
 	// no. of variables
@@ -97,7 +98,7 @@ public class Polynomial {
 			
 			for (int j = 0; j < this.degree; j++) {
 				
-				temp += -1 * ((derivative[i][j]) * Math.pow(x[i], j));
+				temp += ((derivative[i][j]) * Math.pow(x[i], j));
 			}
 			
 			gradient[i] = temp;
@@ -173,7 +174,7 @@ public class Polynomial {
 					System.out.printf("%.2f ", this.coefs[i][j]);
 				}
 				
-				if (this.coefs[i][j] != 0 && j != 0) {
+				if (/*this.coefs[i][j] != 0 &&*/ j != 0) {
 					
 					System.out.printf("%.2fx%d^%d + ", this.coefs[i][j], i+1, j);
 				}
@@ -187,6 +188,6 @@ public class Polynomial {
 				System.out.print(") + ");
 			}
 		}
-		System.out.println("\n");
+		System.out.println();
 	}
 }
