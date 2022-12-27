@@ -1,0 +1,57 @@
+This project is an unconstrained optimization program that uses the 'Steepest Descent' method to minimize a function.
+
+--- LOADING FUNCTIONS ---
+
+The program reads in polynomials from a CSV file in the following format:
+
+  coef, coef, coef, ...
+  .
+  .
+  .
+  * (signifying end of polynomial)
+  
+For example, in order to represent the polynomials, x + 3 + y - 5 and x^2 + 3x + 1 + y^2 + 5, you would encode the CSV as follows:
+
+  -- Start of file --
+  1, 3
+  1, -5
+  *
+  1, 3, 1
+  1, 0, 5
+  -- End of file --
+  
+The program will automatically parse through the polynomials.csv (must be in the source file) and check for consistent polynomials in each cost function. If an inconsistent polynomial is detected, it will not be loaded to be optimized. 
+
+-- THE ALGORITHM --
+
+The steepest descent algorithm is a basic gradient descent that follows the following recursive function:
+
+  x(n + 1) = x(n) - gradient * step
+  
+  where x(n + 1) is the next point, x(n) is the current point, the gradient is a matrix of partial derivative, and the step size is a scalar value.
+  
+As the user, we can fix the step size to a constant value, however, this isn't the most efficient way to reach the local minimum. Instead, we can test different 'line search' methods that minimize the auxiliary function. We employ 2 different linear search methods, Armijo Backtracking, and Golden Section Search.
+
+ARMIJO:
+
+  Armijo backtracking updates the step size, alpha, using an update term tau based on whether or not the update rule is satisfied. 
+  
+  The update rule is: 
+  
+    f(x - gradient * alpha) <= f(x) - alpha * beta * gradientNorm^2
+    
+    where beta is a constant term in [0, 1], and the gradientNorm is the magnitude of the gradient vector.
+    
+  If the update rule is not satisfied, alpha = tau * alpha, the process is repeated for a user-specified number of iterations or until the Armijo condition   is met. Once the line search ends, the final alpha value is returned to the line search algorithm for that step and the process continues until the local   minimum is found. 
+  
+GOLDEN SECTION SEARCH (GSS):
+
+  GSS is a more complicated line search algorithm that minimizes the auxiliary function: 
+  
+    f(alpha) = f(x - gradient * alpha)
+  
+    where x is the current point, the gradient is the matrix of partial derivatives, and alpha is being minimized.
+    
+  A video that goes into more depth about how the GSS line search method works is lined here:
+  
+    https://youtu.be/6NYp3td3cjU
